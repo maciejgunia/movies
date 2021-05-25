@@ -1,4 +1,5 @@
-import { FC, useEffect, useState } from "react";
+import { debounce } from "lodash";
+import { FC, useState } from "react";
 import { Movie } from "../Movie/Movie";
 import { Search } from "../Search/Search";
 
@@ -13,9 +14,8 @@ interface MovieData {
 
 export const MovieList: FC = () => {
     const [movies, setMovies] = useState<MovieData[]>([]);
-    const [query, setQuery] = useState<String>("");
 
-    useEffect(() => {
+    const fetchData = debounce((query) => {
         const key = "e67d3709101fb0772be92546b4c8e480";
 
         if (query.length === 0) {
@@ -27,11 +27,11 @@ export const MovieList: FC = () => {
             .then((data) => {
                 setMovies(data.results);
             });
-    }, [query]);
+    }, 500);
 
     return (
         <div>
-            <Search onQueryChange={(q) => setQuery(q)} />
+            <Search onQueryChange={fetchData} />
             <div className="movie__list">
                 {movies.map(({ id, title, poster_path, vote_average }) => (
                     <Movie key={id} title={title} cover={poster_path} vote={vote_average} />

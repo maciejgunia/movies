@@ -1,16 +1,17 @@
-import { FC, useRef } from "react";
+import { FC, useState } from "react";
 import "./Search.scss";
-import debounce from "lodash/debounce";
 
 interface SearchProps {
     onQueryChange: (value: string) => void;
 }
 
 export const Search: FC<SearchProps> = ({ onQueryChange }) => {
-    const element = useRef<any>(null);
-    const emitValue = debounce(() => {
-        onQueryChange(element.current.value);
-    }, 500);
+    const [query, setQuery] = useState("");
 
-    return <input className="search" ref={element} onChange={emitValue} type="text"></input>;
+    const queryHandler = (value: string) => {
+        onQueryChange(value);
+        setQuery(value);
+    };
+
+    return <input className="search" value={query} onChange={(e) => queryHandler(e.target.value)} type="text"></input>;
 };
