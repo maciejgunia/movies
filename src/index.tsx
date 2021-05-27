@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom";
-import { MovieList } from "./MovieList/MovieList";
 import reportWebVitals from "./reportWebVitals";
 
 import "./index.scss";
+import App from "./App/App";
 
-ReactDOM.render(<MovieList />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

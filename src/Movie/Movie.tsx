@@ -1,4 +1,7 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
+import AuthContext from "../App/AuthContext";
+import Sticker from "../Sticker/Sticker";
+import FavButton from "../FavButton/FavButton";
 import "./Movie.scss";
 
 interface MovieProps {
@@ -8,6 +11,8 @@ interface MovieProps {
 }
 
 export const Movie: FC<MovieProps> = ({ title, cover, vote }) => {
+    const auth = useContext(AuthContext);
+
     return (
         <div className="movie">
             {cover ? (
@@ -20,7 +25,14 @@ export const Movie: FC<MovieProps> = ({ title, cover, vote }) => {
                 <img className="movie__cover" src="https://via.placeholder.com/220x330?text=no image" alt="" />
             )}
             <p className="movie__title">{title}</p>
-            <p className="movie__vote">{vote.toFixed(1)}</p>
+            <div className="movie__vote">
+                <Sticker>{vote.toFixed(1)}</Sticker>
+            </div>
+            {auth.isUserLoggedIn && (
+                <div className="movie__fav-button">
+                    <FavButton />
+                </div>
+            )}
         </div>
     );
 };

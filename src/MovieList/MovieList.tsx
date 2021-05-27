@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import { FC, useState } from "react";
+import React from "react";
 import { Movie } from "../Movie/Movie";
 import { Search } from "../Search/Search";
 
@@ -12,31 +12,47 @@ interface MovieData {
     vote_average: number;
 }
 
-export const MovieList: FC = () => {
-    const [movies, setMovies] = useState<MovieData[]>([]);
+interface MovieListState {
+    query: string;
+    movies: MovieData[];
+}
 
-    const fetchData = debounce((query) => {
-        const key = "e67d3709101fb0772be92546b4c8e480";
+export class MovieList extends React.Component {
+    state: MovieListState = { query: "", movies: [] };
+    key = "e67d3709101fb0772be92546b4c8e480";
 
-        if (query.length === 0) {
+    constructor(props: any) {
+        super(props);
+        this.changeQuery = this.changeQuery.bind(this);
+        this.fetchData = debounce(this.fetchData.bind(this), 500);
+    }
+
+    fetchData() {
+        if (this.state.query.length === 0) {
             return;
         }
 
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}`)
+        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.key}&query=${this.state.query}`)
             .then((response) => response.json())
             .then((data) => {
-                setMovies(data.results);
+                this.setState({ ...this.state, movies: data.results });
             });
-    }, 500);
+    }
 
-    return (
-        <div>
-            <Search onQueryChange={fetchData} />
-            <div className="movie__list">
-                {movies.map(({ id, title, poster_path, vote_average }) => (
-                    <Movie key={id} title={title} cover={poster_path} vote={vote_average} />
-                ))}
+    changeQuery(query: string) {
+        this.setState((prevState) => ({ ...prevState, query }), this.fetchData);
+    }
+
+    render() {
+        return (
+            <div>
+                <Search query={this.state.query} onQueryChange={this.changeQuery} />
+                <div className="movie__list">
+                    {this.state.movies.map(({ id, title, poster_path, vote_average }) => (
+                        <Movie key={id} title={title} cover={poster_path} vote={vote_average} />
+                    ))}
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+}
