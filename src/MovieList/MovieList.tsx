@@ -49,7 +49,7 @@ export class MovieList extends React.Component {
                 <Search query={this.state.query} onQueryChange={this.changeQuery} />
                 <div className="movie__list">
                     {this.state.movies.map(({ id, title, poster_path, vote_average }) => (
-                        <Movie key={id} title={title} cover={poster_path} vote={vote_average} />
+                        <Movie key={id} id={id} title={title} cover={poster_path} vote={vote_average} />
                     ))}
                 </div>
             </div>

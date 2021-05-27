@@ -5,12 +5,13 @@ import FavButton from "../FavButton/FavButton";
 import "./Movie.scss";
 
 interface MovieProps {
+    id: number;
     title: string;
     cover: string;
     vote: number;
 }
 
-export const Movie: FC<MovieProps> = ({ title, cover, vote }) => {
+export const Movie: FC<MovieProps> = ({ id, title, cover, vote }) => {
     const auth = useContext(AuthContext);
 
     return (
@@ -30,7 +31,7 @@ export const Movie: FC<MovieProps> = ({ title, cover, vote }) => {
             </div>
             {auth.isUserLoggedIn && (
                 <div className="movie__fav-button">
-                    <FavButton />
+                    <FavButton id={id} />
                 </div>
             )}
         </div>
