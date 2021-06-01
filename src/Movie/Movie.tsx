@@ -1,4 +1,4 @@
-import { FC, useContext } from "react";
+import React, { FC, useContext } from "react";
 import AuthContext from "../App/AuthContext";
 import Sticker from "../Sticker/Sticker";
 import FavButton from "../FavButton/FavButton";

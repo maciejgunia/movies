@@ -1,6 +1,6 @@
 import { useReducer, useState } from "react";
 import Login from "../Login/Login";
-import { MovieList } from "../MovieList/MovieList";
+import MovieList from "../MovieList/MovieList";
 import AuthContext from "./AuthContext";
 
 import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
